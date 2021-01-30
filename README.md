@@ -31,13 +31,13 @@ curl http://localhost:5000/mine
 
 curl http://localhost:5000/nodes/resolve
 
-curl -X POST -H "Content-Type: application/json" -d '***REMOVED***"nodes": ["http://localhost:5001"]***REMOVED***' 'http://localhost:5001/nodes/register'
+curl -X POST -H "Content-Type: application/json" -d '{"nodes": ["http://localhost:5001"]}' 'http://localhost:5001/nodes/register'
 
-curl -X POST -H "Content-Type: application/json" -d '***REMOVED***
+curl -X POST -H "Content-Type: application/json" -d '{
  "sender": "d4ee26eee15148ee92c6cd394edd974e",
  "recipient": "someone-other-address",
  "amount": 5
-***REMOVED***' "http://localhost:5000/transactions/new"
+}' "http://localhost:5000/transactions/new"
 ```
 
 For further description of what each of these commands does, please see this [article](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46).
