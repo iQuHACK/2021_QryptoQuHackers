@@ -1,0 +1,8 @@
+Original bitcoin paper: https://bitcoin.org/bitcoin.pdf
+qBitcoin inspo: https://arxiv.org/pdf/1708.04955.pdf
+
+Quantum Digital Signature:
+    - Inspo Paper: https://arxiv.org/pdf/quant-ph/0105032.pdf
+    - Wiki summary: https://en.wikipedia.org/wiki/Quantum_digital_signature
+
+Quantum Crypto Hash Function: https://arxiv.org/pdf/1310.4922.pdf
