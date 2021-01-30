@@ -203,3 +203,5 @@ $RECYCLE.BIN/
 ### .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 
+### API Key File
+ionq_api_key.txt
