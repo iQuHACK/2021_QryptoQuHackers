@@ -9,6 +9,7 @@ from math import log
 
 
 
+
 def swaptest(qsi, qsj): #size=number of qubits in the quantum state. the first qubit is measured at the end.
     size = log(len(qsi), 2)
     q = QuantumRegister(2*size+1)
