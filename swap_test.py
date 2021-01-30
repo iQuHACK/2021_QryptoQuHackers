@@ -2,7 +2,7 @@ from qiskit import *
 from qiskit_ionq_provider import IonQProvider 
 from qiskit.providers.jobstatus import JobStatus
 #Call provider and set token value
-provider = IonQProvider(token='BFmvdArkiCbsS12r4LZf5VgYDo4HngsS')
+
 
 
 
