@@ -175,7 +175,9 @@ class Blockchain:
         """
 
         # We must make sure that the Dictionary is Ordered, or we'll have inconsistent hashes
-        block_string = json.dumps(block, sort_keys=True).encode()
+        simplified_block = block
+        simplified_block['transactions'] = [{ your_key: t[your_key] for your_key in ['sender','recipient','amount'] } for t in block['transactions']]
+        block_string = json.dumps(simplified_block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
 
     def proof_of_work(self, last_block):
@@ -278,8 +280,9 @@ def new_transaction():
 
 @app.route('/chain', methods=['GET'])
 def full_chain():
+    simplified_chain = [[{ your_key: t[your_key] for your_key in ['sender','recipient','amount'] } for t in block['transactions']] for block in blockchain.chain]
     response = {
-        'chain': blockchain.chain,
+        'chain': simplified_chain,
         'length': len(blockchain.chain),
     }
     return jsonify(response), 200
