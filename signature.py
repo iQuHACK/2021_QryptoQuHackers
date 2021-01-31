@@ -72,7 +72,8 @@ class Validation():
     MESSAGE_THRESHOLD = .1 #??????
     
     def __init__(self, transaction):
-        self.signature = transaction.get_signature()
+        #self.signature = transaction.get_signature()
+        self.signature = transaction
         #self.validations = self.validate_transaction()
 
     def key_tests(self, signed_bit):

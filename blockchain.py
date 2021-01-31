@@ -5,18 +5,18 @@ from urllib.parse import urlparse
 from uuid import uuid4
 import random, string
 from json import JSONEncoder
-#import numpy
+import numpy
 
 import requests
 from flask import Flask, jsonify, request
 
 from signature import Signed_Transaction, Validation
 
-#class NumpyArrayEncoder(JSONEncoder):
-    #def default(self, obj):
-        #if isinstance(obj, numpy.ndarray):
-            #return obj.tolist()
-        #return JSONEncoder.default(self, obj)
+class NumpyArrayEncoder(JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, numpy.ndarray):
+            return obj.tolist()
+        return JSONEncoder.default(self, obj)
 
 class ComplexEncoder(json.JSONEncoder):
     def default(self, z):
@@ -149,8 +149,9 @@ class Blockchain:
         """
         message = sender+recipient+str(amount)
         signed_message = Signed_Transaction(message)
-        signature = json.dumps(signed_message.get_signature(), cls=ComplexEncoder)
+        #signature = json.dumps(signed_message.get_signature(), cls=NumpyArrayEncoder)
         #signature = signed_message.get_signature()
+        signature = str(signed_message.get_signature())
 
         self.current_transactions.append({
             'sender': sender,
@@ -232,7 +233,7 @@ def mine():
     
     # Verify
     for t in last_block['transactions']:
-        if not Validation(signed_message).validate()['pass']: # TODO: figure out how to replace signed_message with something from t 
+        if not Validation(t).validate()['pass']: # TODO: figure out how to replace signed_message with something from t 
             last_block['transactions'].remove(t)
 
     # We must receive a reward for finding the proof.
@@ -327,5 +328,3 @@ if __name__ == '__main__':
     port = args.port
 
     app.run(host='0.0.0.0', port=port)
-
-    #
