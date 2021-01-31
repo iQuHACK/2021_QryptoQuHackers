@@ -10,7 +10,7 @@ from json import JSONEncoder
 import requests
 from flask import Flask, jsonify, request
 
-from Signature import Signed_Transaction, Validation
+from signature import Signed_Transaction, Validation
 
 #class NumpyArrayEncoder(JSONEncoder):
     #def default(self, obj):

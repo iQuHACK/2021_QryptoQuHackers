@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from qutip import *
 import numpy as np
 import matplotlib.pyplot as plt
 from math import log
