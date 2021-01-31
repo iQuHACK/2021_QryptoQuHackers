@@ -59,7 +59,8 @@ To demonstrate how the protocol would react to forgery of digital signature, we 
 Compared to the classical bitcoin blockchains, implementing the quantum digital signature enables the transactions to be validated through the mining process and its security is based on fundamental principles of quantum physics instead of mathematical complexity.
 Commented demonstrations of specific functions can also be found under the overview.ipynb file. 
  
-For future works, some important goals are …
-Utilizing quantum systems more efficiently to use less qubits
-Speeding up the time required to make a transaction and generate a signature
-Testing how the cryptocurrency holds up as the blockchain grows
+For future works, some important goals are
+
+- Utilizing quantum systems more efficiently to use less qubits
+- Speeding up the time required to make a transaction and generate a signature
+- Testing how the cryptocurrency holds up as the blockchain grows
