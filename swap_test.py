@@ -3,15 +3,9 @@ from qiskit import *
 from qiskit.providers.jobstatus import JobStatus
 #Call provider and set token value
 
-
-
 from math import log
 
-
-#test
-
-
-def swaptest(qsi, qsj):
+def swap_test(qsi, qsj, verbose=False):
     size = int(log(len(qsi), 2))
     q = QuantumRegister(2*size+1)
     c = ClassicalRegister(1)    
@@ -25,6 +19,10 @@ def swaptest(qsi, qsj):
         swaptest.cx(i+size,i)
     swaptest.h(0)
     swaptest.measure(range(1), range(1))
+    
+    if verbose:
+        print(swaptest.draw())
+    
     backend_sim = Aer.get_backend('qasm_simulator')
     job_sim = execute(swaptest, backend_sim, shots=1)
     result_sim = job_sim.result()
