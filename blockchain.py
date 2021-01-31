@@ -10,7 +10,7 @@ import numpy
 import requests
 from flask import Flask, jsonify, request
 
-from signature import Signed_Transaction, Validation
+from signature import Signed_Transaction, Validation, Forgery
 
 class NumpyArrayEncoder(JSONEncoder):
     def default(self, obj):
@@ -150,8 +150,8 @@ class Blockchain:
         message = sender+recipient+str(amount)
         signed_message = Signed_Transaction(message)
         #signature = json.dumps(signed_message.get_signature(), cls=NumpyArrayEncoder)
-        #signature = signed_message.get_signature()
-        signature = str(signed_message.get_signature())
+        signature = signed_message.get_signature()
+        #signature = str(signed_message.get_signature())
 
         self.current_transactions.append({
             'sender': sender,
@@ -232,8 +232,8 @@ def mine():
     proof = blockchain.proof_of_work(last_block)
     
     # Verify
-    for t in last_block['transactions']:
-        if not Validation(t).validate()['pass']: # TODO: figure out how to replace signed_message with something from t 
+    for t in blockchain.current_transactions:
+        if not Validation(t['signature']).validate()['pass']: # TODO: figure out how to replace signed_message with something from t 
             last_block['transactions'].remove(t)
 
     # We must receive a reward for finding the proof.
@@ -248,10 +248,12 @@ def mine():
     previous_hash = blockchain.hash(last_block)
     block = blockchain.new_block(proof, previous_hash)
 
+    simplified_transactions = [{ your_key: t[your_key] for your_key in ['sender','recipient','amount'] } for t in block['transactions']]
+
     response = {
         'message': "New Block Forged",
         'index': block['index'],
-        'transactions': block['transactions'],
+        'transactions': simplified_transactions,
         'proof': block['proof'],
         'previous_hash': block['previous_hash'],
     }
