@@ -64,3 +64,4 @@ For future works, some important goals are
 - Utilizing quantum systems more efficiently to use less qubits
 - Speeding up the time required to make a transaction and generate a signature
 - Testing how the cryptocurrency holds up as the blockchain grows
+- Make it easier to interact with (web version)
