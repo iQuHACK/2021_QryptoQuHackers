@@ -40,8 +40,8 @@ class Signed_Transaction():
     # make M pairs of public keys (Quantum States)
     def generate_pub_keys(self, priv_keys):
         return {
-            "f_k0":[crypto_hash(ki, priv_keys["k0"]).astype(np.float) for ki in priv_keys["k0"]], 
-            "f_k1":[crypto_hash(kj, priv_keys["k1"]).astype(np.float) for kj in priv_keys["k1"]]
+            "f_k0":[crypto_hash(ki, priv_keys["k0"]) for ki in priv_keys["k0"]], 
+            "f_k1":[crypto_hash(kj, priv_keys["k1"]) for kj in priv_keys["k1"]]
         }
     
     def sign_bit(self, b, priv_keys, pub_keys):
@@ -83,7 +83,7 @@ class Validation():
         pub_keys = signed_bit["pub_keys"]['f_k0'] if signed_bit["m_bit"] == '0' else signed_bit["pub_keys"]['f_k1']
         
         # hash private keys
-        hashed_keys = [crypto_hash(ki, priv_keys).astype(np.float) for ki in priv_keys]
+        hashed_keys = [crypto_hash(ki, priv_keys) for ki in priv_keys]
         
         # perform swap test on public and hashed private keys
         tests = [swap_test(pki, pkj) for pki, pkj in zip(pub_keys, hashed_keys)]
