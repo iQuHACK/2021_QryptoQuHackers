@@ -1,5 +1,5 @@
 from qiskit import *
-from qiskit_ionq_provider import IonQProvider 
+#from qiskit_ionq_provider import IonQProvider 
 from qiskit.providers.jobstatus import JobStatus
 #Call provider and set token value
 
@@ -8,10 +8,11 @@ from qiskit.providers.jobstatus import JobStatus
 from math import log
 
 
+#test
 
 
-def swaptest(qsi, qsj): #size=number of qubits in the quantum state. the first qubit is measured at the end.
-    size = log(len(qsi), 2)
+def swaptest(qsi, qsj):
+    size = int(log(len(qsi), 2))
     q = QuantumRegister(2*size+1)
     c = ClassicalRegister(1)    
     swaptest = QuantumCircuit(q,c)
@@ -25,10 +26,11 @@ def swaptest(qsi, qsj): #size=number of qubits in the quantum state. the first q
     swaptest.h(0)
     swaptest.measure(range(1), range(1))
     backend_sim = Aer.get_backend('qasm_simulator')
-    job_sim = execute(circ, backend_sim, shots=1)
+    job_sim = execute(swaptest, backend_sim, shots=1)
     result_sim = job_sim.result()
     counts = result_sim.get_counts()
-    return counts[0]
+    return int('1' in counts)
+#print(swaptest([0.8,0.6],[0.8,0.6]))
 
 #swap3=swaptest(3)
 #print(swap3.draw())

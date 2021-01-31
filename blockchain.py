@@ -4,22 +4,26 @@ from time import time
 from urllib.parse import urlparse
 from uuid import uuid4
 import random, string
+from json import JSONEncoder
+#import numpy
 
 import requests
 from flask import Flask, jsonify, request
 
-class Signature():
-    def __init__(self, message):
-       self.message = message
-       self.priv_keys = 0
-       self.pub_keys = 1
-    
-class Validation():
-    def __init__(self):
-        self.res = 0
- 
-    def result(self):
-        return self.res
+from Signature import Signed_Transaction, Validation
+
+#class NumpyArrayEncoder(JSONEncoder):
+    #def default(self, obj):
+        #if isinstance(obj, numpy.ndarray):
+            #return obj.tolist()
+        #return JSONEncoder.default(self, obj)
+
+class ComplexEncoder(json.JSONEncoder):
+    def default(self, z):
+        if isinstance(z, complex):
+            return (z.real, z.imag)
+        else:
+            super().default(self, z)
 
 class Blockchain:
     def __init__(self):
@@ -134,7 +138,7 @@ class Blockchain:
         self.chain.append(block)
         return block
 
-    def new_transaction(self, sender, recipient, amount, signature):
+    def new_transaction(self, sender, recipient, amount):
         """
         Creates a new transaction to go into the next mined Block
 
@@ -143,6 +147,11 @@ class Blockchain:
         :param amount: Amount
         :return: The index of the Block that will hold this transaction
         """
+        message = sender+recipient+str(amount)
+        signed_message = Signed_Transaction(message)
+        signature = json.dumps(signed_message.get_signature(), cls=ComplexEncoder)
+        #signature = signed_message.get_signature()
+
         self.current_transactions.append({
             'sender': sender,
             'recipient': recipient,
@@ -222,10 +231,8 @@ def mine():
     proof = blockchain.proof_of_work(last_block)
     
     # Verify
-    v = Validation()
     for t in last_block['transactions']:
-        if not v.result(): 
-            print('entered loop')
+        if not Validation(signed_message).validate()['pass']: # TODO: figure out how to replace signed_message with something from t 
             last_block['transactions'].remove(t)
 
     # We must receive a reward for finding the proof.
@@ -234,7 +241,6 @@ def mine():
         sender="0",
         recipient=node_identifier,
         amount=1,
-        signature="test",
     )
 
     # Forge the new Block by adding it to the chain
@@ -255,15 +261,13 @@ def mine():
 def new_transaction():
     values = request.get_json()
 
-    values['signature'] = Signature("message").__dict__
-
     # Check that the required fields are in the POST'ed data
-    required = ['sender', 'recipient', 'amount', 'signature']
+    required = ['sender', 'recipient', 'amount']
     if not all(k in values for k in required):
         return 'Missing values', 400
 
     # Create a new Transaction
-    index = blockchain.new_transaction(values['sender'], values['recipient'], values['amount'], values['signature'])
+    index = blockchain.new_transaction(values['sender'], values['recipient'], values['amount'])
 
     response = {'message': f'Transaction will be added to Block {index}'}
     return jsonify(response), 201
