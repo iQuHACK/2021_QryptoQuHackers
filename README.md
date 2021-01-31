@@ -53,7 +53,8 @@ The quantum digital signature is generated uniquely for each transaction when ca
 Each transaction is added to the next blockchain, and they are verified when mining the next blockchain using the validate() function in signature.py. The transaction will be removed from the blockchain if we detect more than 10% total bit failure. (The function returns pass/fail and the percentage of failure).
  
 ## Demonstration:
-To demonstrate how the protocol would react to forgery of digital signature, we introduced an eavesdropper trying to fake a digital signature with the class Forgery() in signature.py. The forge_transaction() function forges a new set of private keys to generate public keys. In our demonstration, when the fake transaction goes through the mining process, ...
+To demonstrate how the protocol would react to forgery of digital signature, we introduced an eavesdropper trying to fake a digital signature with the class Forgery() in signature.py. The forge_transaction() function forges a new set of private keys to generate public keys. In our demonstration, when the fake transaction goes through the mining process, the Gottesman-Chuang scheme Quantum Digital Signature protocol invalidates Eve’s transaction with an 81% failure.
+ 
  
 ## Proposal for future work
 Compared to the classical bitcoin blockchains, implementing the quantum digital signature enables the transactions to be validated through the mining process and its security is based on fundamental principles of quantum physics instead of mathematical complexity.
@@ -63,4 +64,4 @@ For future works, some important goals are:
 - Utilizing quantum systems more efficiently to use less qubits
 - Speeding up the time required to make a transaction and generate a signature
 - Testing how the cryptocurrency holds up as the blockchain grows
-
+- Make it easier to interact with (web version)
