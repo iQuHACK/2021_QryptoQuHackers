@@ -3,6 +3,7 @@ import json
 from time import time
 from urllib.parse import urlparse
 from uuid import uuid4
+import random
 
 import requests
 from flask import Flask, jsonify, request
@@ -15,7 +16,7 @@ class Signature():
     
 class Validation():
     def __init__(self):
-        self.res = 1
+        self.res = 0
  
     def result(self):
         return self.res
@@ -208,7 +209,7 @@ class Blockchain:
 app = Flask(__name__)
 
 # Generate a globally unique address for this node
-node_identifier = str(uuid4()).replace('-', '')
+node_identifier = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
 
 # Instantiate the Blockchain
 blockchain = Blockchain()
@@ -224,6 +225,7 @@ def mine():
     v = Validation()
     for t in last_block['transactions']:
         if not v.result(): 
+            print('entered loop')
             last_block['transactions'].remove(t)
 
     # We must receive a reward for finding the proof.
